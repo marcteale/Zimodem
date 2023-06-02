@@ -89,6 +89,11 @@ void ZConfig::doModeCommand()
         }
       }
       else
+      if(c=='c') // try to set the clock
+      {
+        currState=ZCFGMENU_CLOCK;
+        showMenu=true;
+      }
       if(c=='a') // add to phonebook
       {
         currState=ZCFGMENU_NUM;
@@ -164,6 +169,16 @@ void ZConfig::doModeCommand()
         showMenu=true; // re-show the menu
       }
       break;
+    }
+    case ZCFGMENU_CLOCK: {
+      serial.printf("%sTERMINAL CLOCK SET%s",EOLNC,EOLNC);
+      serial.printf("Trying to set time to 12:34 PM.%s",EOLNC);
+      // Corresponds to <ESC> c 8 1 2 3 4
+      byte message[] = {0x1B, 0x63, 0x38, 0x31, 0x32, 0x33, 0x34};
+      serial.write(message, sizeof(message));
+      serial.printf("Broken?  Or just a failure?%s",EOLNC);
+      currState=ZCFGMENU_MAIN;
+      showMenu=true;
     }
     case ZCFGMENU_WICONFIRM:
     {
@@ -692,6 +707,7 @@ void ZConfig::loop()
         serial.printf("[BBS] host: %s%s",bbsMode.c_str(),EOLNC);
         serial.printf("[PRINT] spec: %s%s",printMode.getLastPrinterSpec(),EOLNC);
         serial.printf("[PETSCII] translation: %s%s",commandMode.serial.isPetsciiMode()?"ON":"OFF",EOLNC);
+        serial.printf("[CLOCK] Set the terminal clock%s",EOLNC);
         serial.printf("[ADD] new phonebook entry%s",EOLNC);
         PhoneBookEntry *p = phonebook;
         if(p != null)
@@ -871,4 +887,3 @@ void ZConfig::loop()
     serialOutDeque();
   }
 }
-

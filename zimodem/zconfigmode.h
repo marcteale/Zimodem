@@ -33,7 +33,8 @@ class ZConfig : public ZMode
       ZCFGMENU_NOTES=11,
       ZCFGMENU_NETMENU=12,
       ZCFGMENU_SUBNET=13,
-      ZCFGMENU_NEWPRINT=14
+      ZCFGMENU_NEWPRINT=14,
+      ZCFGMENU_CLOCK=15
     } currState;
     
     ZSerial serial; // storage for serial settings only
@@ -64,4 +65,3 @@ class ZConfig : public ZMode
     void serialIncoming();
     void loop();
 };
-
