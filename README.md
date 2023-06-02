@@ -2,7 +2,7 @@
 
 # Zimodem 
 
-Zimodem 3.7.1 (C)2016-2022 Bo Zimmerman
+Zimodem 4.0.0 (C)2016-2023 Bo Zimmerman
 Please read the LICENSE file for license information
 Please read the NOTICE file for credits information
 
@@ -114,6 +114,7 @@ The command set is as follows (not case sensitive):
 | `ATDT"[HOSTNAME]:[PORT]"` | Adding a `T` modifier causes connection input to be translated per TELNET during the streaming session. |
 | `ATDE"[HOSTNAME]:[PORT]"` | Adding a `E` modifier causes terminal echo to be enabled that streaming session. |
 | `ATDX"[HOSTNAME]:[PORT]"` | Adding a `X` modifier causes XON/XOFF flow control to be enabled that streaming session. |
+| `ATDS"[NAME]:[PASS]@[HOSTNAME]:[PORT]"` | Adding a S modifier, along with username and password, causes an SSH shell connection to be made. |
 | `ATDnnnnnnn` | Where `n = 0-9`, if the digits exist in the phonebook (see `ATP`), it will try connect to that host, with those modifiers, from the phonebook. |
 | --- | --- |
 | `ATC` | Shows information about the current network connection in the following format `[CONNECTION STATE] [CONNECTION ID] [CONNECTED TO HOST]:[CONNECTED TO PORT]` |
