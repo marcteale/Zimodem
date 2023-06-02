@@ -48,61 +48,61 @@ The command set is as follows (not case sensitive):
 
 ### Control
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `+++` | With a 1 second pause with no other characters afterwards, this will disconnect the current opened connection. |
 | `ATZ` | Closes all open socket connections (preserving the Access Point connection), stops all listeners, and resets the state of the Command processor to the saved configuration, preserving the current baud rate and wifi connection. |
 | `A/` | Repeats the previous command |
 
 ### ATA - Answer
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATA ` | If a server listener has generated a `RING`, then `ATA` will switch the last rung connection to Stream mode (see `ATD`). |
-| `ATAn` | Causes the modem to create a server listening on port `n`.  When a connection is received, the terminal will generate 1 or more `RING`s according to the `ATS0` register, followed by a normal `CONNECT` response. At this point, all other commands related to connections may be used normally, unless `ATS41` is > `0`, in which case incoming connections are automatically sent to Stream mode as per `ATD` or `ATA`. Listeners are listed along with other connections using `ATC0`. |
+| `ATAEn` | Adding a `E` modifier causes connection terminal echo to be enabled when the changed to Stream mode |
 | `ATAPn` | Adding a `P` modifier causes all incoming connection input to be translated to PETSCII |
 | `ATATn` | Adding a `T` modifier causes connection streaming input to be translated per TELNET when the changed to Stream mode |
-| `ATAEn` | Adding a `E` modifier causes connection terminal echo to be enabled when the changed to Stream mode |
 | `ATAXn` | Adding a `X` modifier causes connection XON/XOFF flow control to be enabled  when the changed to Stream mode. |
+| `ATAn` | Causes the modem to create a server listening on port `n`.  When a connection is received, the terminal will generate 1 or more `RING`s according to the `ATS0` register, followed by a normal `CONNECT` response. At this point, all other commands related to connections may be used normally, unless `ATS41` is > `0`, in which case incoming connections are automatically sent to Stream mode as per `ATD` or `ATA`. Listeners are listed along with other connections using `ATC0`. |
 
 ### ATB - Baud
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATBn` | Sets a new serial Baud Rate. Takes effect immediately. |
 | `ATB"n,xYz"` | Sets baud rate `n`, bits `x`, parity (`E`,`O`,`M`, or `N`) for `Y`, and stop bits `z`. |
 
 ### ATC - Connection
 | Command | Description |
-|---|-----|
-| `ATC` | Shows information about the current network connection in the following format `[CONNECTION STATE] [CONNECTION ID] [CONNECTED TO HOST]:[CONNECTED TO PORT]` |
-| `ATC0` | Lists information about all of the network connections in the following format `[CONNECTION STATE] [CONNECTION ID] [CONNECTED TO HOST]:[CONNECTED TO PORT]`, including any Server (`ATA`) listeners. |
-| `ATCn` | Where `n > 0`, this changes the Current connection to the one with the given ID.  If no connection exists with the given id, `ERROR` is returned. |
+| --- | ----- |
 | `ATC"[HOSTNAME]:[PORT]"` | Creates a new connection to the given host and port, assigning a new id if the connection is successful, and making this connection the new Current connection.  The quotes and colon are required. |
+| `ATC0` | Lists information about all of the network connections in the following format `[CONNECTION STATE] [CONNECTION ID] [CONNECTED TO HOST]:[CONNECTED TO PORT]`, including any Server (`ATA`) listeners. |
+| `ATCE"[HOSTNAME]:[PORT]"` | Adding a `E` modifier causes terminal echo to be enabled when the changed to Stream mode |
 | `ATCP"[HOSTNAME]:[PORT]"` | Adding a `P` modifier causes all connection input to be translated to PETSCII |
 | `ATCT"[HOSTNAME]:[PORT]"` | Adding a `T` modifier causes streaming input to be translated per TELNET when the changed to Stream mode |
-| `ATCE"[HOSTNAME]:[PORT]"` | Adding a `E` modifier causes terminal echo to be enabled when the changed to Stream mode |
 | `ATCX"[HOSTNAME]:[PORT]"` | Adding a `X` modifier causes XON/XOFF flow control to be enabled  when the changed to Stream mode |
+| `ATC` | Shows information about the current network connection in the following format `[CONNECTION STATE] [CONNECTION ID] [CONNECTED TO HOST]:[CONNECTED TO PORT]` |
+| `ATCn` | Where `n > 0`, this changes the Current connection to the one with the given ID.  If no connection exists with the given id, `ERROR` is returned. |
 
 ### ATD - Dial
 | Command | Description |
-|---|-----|
+| --- | ----- |
+| `ATD"[HOSTNAME]:[PORT]"` | This opens a streaming connection between the terminal and the given host/port. Use `+++` to disconnect and exit back to command mode. |
+| `ATDE"[HOSTNAME]:[PORT]"` | Adding a `E` modifier causes terminal echo to be enabled that streaming session. |
+| `ATDP"[HOSTNAME]:[PORT]"` | Adding a `P` modifier causes connection input to be translated to PETSCII during the streaming session. |
+| `ATDS"[NAME]:[PASS]@[HOSTNAME]:[PORT]"` | Adding a S modifier, along with username and password, causes an SSH shell connection to be made. |
+| `ATDT"[HOSTNAME]:[PORT]"` | Adding a `T` modifier causes connection input to be translated per TELNET during the streaming session. |
+| `ATDX"[HOSTNAME]:[PORT]"` | Adding a `X` modifier causes XON/XOFF flow control to be enabled that streaming session. |
 | `ATD` | Start a streaming connection between the current opened connection.  Use `+++` to exit back to Command mode. |
 | `ATDn` | Where `n > 0`, this will start a streaming connection between the previously opened connection with an id the same as n.  Use `+++` to exit back to Command mode. |
-| `ATD"[HOSTNAME]:[PORT]"` | This opens a streaming connection between the terminal and the given host/port. Use `+++` to disconnect and exit back to command mode. |
-| `ATDP"[HOSTNAME]:[PORT]"` | Adding a `P` modifier causes connection input to be translated to PETSCII during the streaming session. |
-| `ATDT"[HOSTNAME]:[PORT]"` | Adding a `T` modifier causes connection input to be translated per TELNET during the streaming session. |
-| `ATDE"[HOSTNAME]:[PORT]"` | Adding a `E` modifier causes terminal echo to be enabled that streaming session. |
-| `ATDX"[HOSTNAME]:[PORT]"` | Adding a `X` modifier causes XON/XOFF flow control to be enabled that streaming session. |
-| `ATDS"[NAME]:[PASS]@[HOSTNAME]:[PORT]"` | Adding a S modifier, along with username and password, causes an SSH shell connection to be made. |
 | `ATDnnnnnnn` | Where `n = 0-9`, if the digits exist in the phone book (see `ATP`), it will try connect to that host, with those modifiers, from the phone book. |
 
 ### ATE - Echo
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATE0` | Turns serial terminal echo off for command mode. |
 | `ATE1` | Turns serial terminal echo on for command mode. |
 
 ### ATF - Flow Control
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `AT&Kn` | Similar to `ATFn`, `n=0,1,2`: disable, `n=3,6`: rts/cts, `n=4,5`: Xon/Xoff |
 | `ATF0` | Turns on `rts/cts` flow control. |
 | `ATF1` | Turns on `xon/xoff` flow control. |
@@ -112,14 +112,14 @@ The command set is as follows (not case sensitive):
 
 ### ATH - Hang up
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATH ` | Hangs up (disconnects and deletes) all open connections.  Does not close Server listeners. |
 | `ATH0` | Hangs up (disconnects and deletes) the current opened connection. |
 | `ATHn` | Hangs up (disconnects and deletes) the open connection with the given id.  Closing a Server (`ATA`) listener does not close any connections received from that listener. |
 
 ### ATI - Identification
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATI` | Re-shows the startup message, including wifi connection information. |
 | `ATI0` | same as `ATI` |
 | `ATI1` | Shows the current common variable settings, common `S` registers. |
@@ -135,24 +135,24 @@ The command set is as follows (not case sensitive):
 
 ### ATL - Lost Packets
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATL0 ` | Re-sends the most recently sent data packet again |
 | `ATLn ` | Re-sends the most recently sent data packet for connection id `n`. Prefix `n` with `0` for earlier packet. |
 
 ### ATN
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATN0` | Shuts down all listeners, leaving client connections open |
 | `ATNn` | if `n > 0` then same as `ATAn` |
 
 ### ATO - Online
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATO` | Re-enters a Streaming session (see `ATD`) under the previous settings, with the current (previous) connection. |
 
 ### ATP - Phone Book
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATP` | Lists all existing phone book entries, with the format phone number followed by `ATD` modifiers, followed by the host and port.  Add `?` to also get notes. |
 | `ATP"[NUMBER]=[HOSTNAME]:[PORT],[NOTES]"` | Adds or Modifies an entry to the phone book with the given 7 digit number, host, port, and notes. Use `ATDnnnnn..` to connect. |
 | `ATPP"[NUMBER]=[HOSTNAME]:[PORT],[NOTES]"` | Adding a `P` modifier causes connection input to be translated to PETSCII  when connected to that entry. |
@@ -163,13 +163,13 @@ The command set is as follows (not case sensitive):
 
 ### ATQ - Quiet
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATQ0` | Turns off quiet mode (Sends response codes) |
 | `ATQ1` | Turns on quiet mode (Stops sending response codes) |
 
 ### ATR - End of line
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATR0` | Suppresses linefeed (`\n` `$0a`) in end of lines.  Will only send carriage return (`\r` `$0d`). |
 | `ATR1` | Sends `\r\n` (`$0d0a`) as end of line string. |
 | `ATR2` | Sends `\n\r` (`$0a0d`) as end of line string. |
@@ -177,7 +177,7 @@ The command set is as follows (not case sensitive):
 
 ### ATS - Server
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATS0=n` | Changes the number of `RING` messages received before a `CONNECT` response is sent, on incoming Server listeners. |
 | `ATS1=n` | Unimplemented, always returns `OK` |
 | `ATS2=n` | Change the escape character (`n = 0-255`), Defaults to ASCII decimal `43` (`+`) |
@@ -209,7 +209,7 @@ The command set is as follows (not case sensitive):
 
 ### ATT - Transmit
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATT"[MESSAGE]"` | Transmit the given text string, with `\r\n` at the end, on the current connection. |
 | `ATTn` | Where `n > 0`, this starts a transmit of exactly n bytes to the current connection.  The `\n` from entering this command must be followed by the n bytes to transmit. |
 | `ATTP"[MESSAGE]"` | Transmit the given text string, translating PETSCII to ASCII, with `\r\n` at the end, on the current connection. |
@@ -218,13 +218,13 @@ The command set is as follows (not case sensitive):
 
 ### ATV - Verbosity
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATV0` | Turns off verbose responses mode (Uses Terse Numeric response mode) |
 | `ATV1` | Turns on verbose responses mode (Uses Word response mode) |
 
 ### ATW - Wireless
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATW` | List all wireless network access points scanned within range.  The response for each entry is the `SSID`, following by the `RSSI`, followed by an `*` character is the connection is encrypted. |
 | `ATWn` | Where `n > 0`, this lists up to n wireless network access points scanned within range.  The response for each entry is the `SSID`, following by the `RSSI`, followed by an `*` character is the connection is encrypted. |
 | `ATW"[SSI],[PASSWORD]"` | Connects to the wireless access point with the given SSI, using the given password. |
@@ -233,39 +233,39 @@ The command set is as follows (not case sensitive):
 
 ### ATX - eXtended Response Codes
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `ATX0` | Turns off extended response codes (`1/CONNECT` instead of `5/CONNECT 2`, etc..) |
 | `ATX1` | Turns on extended response codes (`5/CONNECT 2` instead of `1/CONNECT`, etc..) |
 
 ### Zimodem Specific
 | Command | Description |
-|---|-----|
-| `AT+CONFIG` | Enter configuration menu |
-| `AT+IRC` | Connect to an IRC server |
-| `AT+PRINT?:<host>:<port>/<path>` | followed by your data.  Where `?` is `A)scii`, `P)etscii`, or `R)aw`.  A 5 second pause in incoming data completes the document and returns to command mode.  Example: `AT+PRINTR:192.168.1.10:631/ipp/printer`  -- followed by `ENTER` and then the data to print, without any pause longer than 5 seconds. |
-| `AT+SHELL` | ESP32 Guru Modem users with SD-cards can enter `AT+SHELL` to get a shell command prompt.  Enter `?` to get a list of shell commands. |
+| --- | ----- |
+| `AT&D` | Resets the delimiter bytes list. No bytes will be delimited, and packets will contain as many bytes as are received and allowed by `ATS40`.  If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
+| `AT&Dn` | Adds the byte denoted by `n` to a list of delimiter bytes.  These are bytes that will compose the last byte in a command-mode incoming packet that is still shorter than the limit set by `ATS40`. This is useful for CR-LF formatted data.  If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
+| `AT&F` | Restores the modem to factory default settings.  Use `&F86` to reformat the SPIFFS. |
 | `AT&H` | Shows a help file from the web, or brief help otherwise.  Use `&H6502` to force web download. |
-| `AT&L ` | Reloads the saved configuration. |
-| `AT&W ` | Saves the current configuration: WiFi settings(`ATW`), baud rate (`ATB`), end of line (`ATR`) settings, flow control (`ATF`), echo mode (`ATE`), extended responses (`ATX`), verbose responses (`ATV`), quiet responses (`ATQ`), PETSCII mode (`AT&P1`), pin statuses (`ATS46 - S58`), Rings (`ATS0`), Listener Stream-mode (`ATS41`), and Listener restore (`ATS60`), printer spec (`AT+PRINT`), and busy message. |
-| `AT&F ` | Restores the modem to factory default settings.  Use `&F86` to reformat the SPIFFS. |
+| `AT&L` | Reloads the saved configuration. |
+| `AT&M` | Resets the mask-out bytes list. No bytes will be masked-out. If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
+| `AT&Mn` | Adds the byte denoted by `n` to a list of mask-out bytes.  These are bytes that are not transmitted to the serial port in command mode incoming packets.  If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
+| `AT&Nx` | Shows the status of ESP module I/O pin `x` |
 | `AT&On` | `n` is `1` to turn on internal serial-reception log, `n` is `0` to turn off or view a previously turned-on log, `n` is `88` to turn on ESP32 debug port. |
 | `AT&Pn` | Where `n > 0`, all command mode input and output will be translated to/from PETSCII before internal processing.  This will not affect received packet data, or the stream mode. |
-| `AT&Nx` | Shows the status of ESP module I/O pin `x` |
-| `AT&Mn` | Adds the byte denoted by `n` to a list of mask-out bytes.  These are bytes that are not transmitted to the serial port in command mode incoming packets.  If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
-| `AT&M ` | Resets the mask-out bytes list. No bytes will be masked-out. If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
-| `AT&Dn` | Adds the byte denoted by `n` to a list of delimiter bytes.  These are bytes that will compose the last byte in a command-mode incoming packet that is still shorter than the limit set by `ATS40`. This is useful for CR-LF formatted data.  If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
-| `AT&D ` | Resets the delimiter bytes list. No bytes will be delimited, and packets will contain as many bytes as are received and allowed by `ATS40`.  If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener. |
+| `AT&W` | Saves the current configuration: WiFi settings(`ATW`), baud rate (`ATB`), end of line (`ATR`) settings, flow control (`ATF`), echo mode (`ATE`), extended responses (`ATX`), verbose responses (`ATV`), quiet responses (`ATQ`), PETSCII mode (`AT&P1`), pin statuses (`ATS46 - S58`), Rings (`ATS0`), Listener Stream-mode (`ATS41`), and Listener restore (`ATS60`), printer spec (`AT+PRINT`), and busy message. |
+| `AT+CONFIG` | Enter configuration menu |
+| `AT+IRC` | Connect to an IRC server |
+| `AT+PRINT?:<host>:<port>/<path>` | Followed by your data.  Where `?` is `A)scii`, `P)etscii`, or `R)aw`.  A 5 second pause in incoming data completes the document and returns to command mode.  Example: `AT+PRINTR:192.168.1.10:631/ipp/printer`  -- followed by `ENTER` and then the data to print, without any pause longer than 5 seconds. |
+| `AT+SHELL` | ESP32 Guru Modem users with SD-cards can enter `AT+SHELL` to get a shell command prompt.  Enter `?` to get a list of shell commands. |
 
 #### Firmware
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `AT&U` | Checks the firmware home page to see if a new version is available. |
 | `AT&U6502` | Will update the firmware from the home page on the web. |
 | `AT&U=x` | Will update the firmware from the web to custom version `x`. |
 
 #### Modem Characteristics
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `AT&S"40=[HOSTNAME]"` | Change the modem hostname |
 | `AT&S"41=[TERMTYPE]"` | Change the telnet `termtype` response string |
 | `AT&S"42=[BUSYMSG]"` | Change the stream connection `busy message` |
@@ -273,13 +273,13 @@ The command set is as follows (not case sensitive):
 #### Misc
 
 | Command | Description |
-|---|-----|
-| `AT&T"[TIMEZONE],[TIME FORMAT],[NTP URL]"` | Set up the NTP clock. `DISABLE` to disable. Format is like Java SimpleDateFormat, but with `%` escapes. Each argument is optional. |
+| --- | ----- |
 | `AT&G"[HOSTNAME]:[PORT]/[FILENAME]"` | Streams a file from an HTTP source on the internet.  The header contains channel 0, file length, and an 8-bit sum of all the bytes in the forthcoming file, followed by the bytes of the file, all formatted as a normal packet.  An ASCII `3` (`CNTRL-C`) received during the transfer will abort. The `S44` register can be used to create artificial delays in this output.  XON/XOFF Flow control also remains in effect with, on a byte-by-byte basis for the auto and manual flow control systems. Requires flash space for caching, or `S45=3` to eliminate the SUM header. |
+| `AT&T"[TIMEZONE],[TIME FORMAT],[NTP URL]"` | Set up the NTP clock. `DISABLE` to disable. Format is like Java SimpleDateFormat, but with `%` escapes. Each argument is optional. |
 
 #### State Machine
 | Command | Description |
-|---|-----|
+| --- | ----- |
 | `AT&Y` | Resets the state machine string. No state machine will be executed.|
 | `AT&Yn` | Change the current state (for command mode AND current connection) to state `n`, where `n` is a decimal number. |
 | `AT&Y"[CODED STATE MACHINE]"` | Adds the coded format string to a state machine.  If this command is followed by a `C`, `N`, or `A` command on the **SAME LINE**, then the setting will apply **ONLY** to that connection or listener.   State Machine Format: `MMcCCNN ...`  States are numbered by their order in the list starting with `00`.  Non-matches automatically go to the next state until a match is made.   `MM` is hex byte to match (or `00` to match all).  `c` is one of these commands: `e` = eat byte, `p` = push byte to que, `d` = send byte, `q` = send all queued, `x` = flush queue, `r` = replace with byte represented by hex `CC`.  `C` is either `-`, one of the command letters above, or a hex byte value if the first command was `r`.  `NN` is the next state to go to, with `00` being the first state. |
