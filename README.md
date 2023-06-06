@@ -275,7 +275,7 @@ The command set is as follows (not case sensitive):
 | Command | Description |
 | --- | ----- |
 | `AT&G"[HOSTNAME]:[PORT]/[FILENAME]"` | Streams a file from an HTTP source on the internet.  The header contains channel 0, file length, and an 8-bit sum of all the bytes in the forthcoming file, followed by the bytes of the file, all formatted as a normal packet.  An ASCII `3` (`CNTRL-C`) received during the transfer will abort. The `S44` register can be used to create artificial delays in this output.  XON/XOFF Flow control also remains in effect with, on a byte-by-byte basis for the auto and manual flow control systems. Requires flash space for caching, or `S45=3` to eliminate the SUM header. |
-| `AT&T"[TIMEZONE],[TIME FORMAT],[NTP URL]"` | Set up the NTP clock. `DISABLE` to disable. Format is like Java SimpleDateFormat, but with `%` escapes. Each argument is optional. |
+| `AT&T"[TIMEZONE],[TIME FORMAT],[NTP URL]"` | Configure NTP and how date/time is displayed.  Format is like Java SimpleDateFormat, but with `%` escapes. Each argument is optional.  NTP server defaults to time.nist.gov.<br /><br />Example: <br />`AT&T"CT,%yyyy-%MM-%dd %HH:%mm:%ss %z,pool.ntp.org"`<br /><br />`DISABLE` to disable. |
 
 #### State Machine
 | Command | Description |
